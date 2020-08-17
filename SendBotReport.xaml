@@ -1,1 +1,27 @@
 SELECT Sum(IIF([Status] = 'Response Awaited from RM',1,0)) as [Aawaiting], Sum(IIF(CHARINDEX('Request Forwarded to CCS',[Status]) > 0,1,0)) as [Forwarded], Sum(IIF([Status] = 'Request Rejected on BPMS',1,0)) as [Rejected], Sum(IIF([Status] = 'Response Awaited from RM',1,0)) as [Approved], count(*) as [Total],Min([OpenDateTime]) as [FROM],Max([OpenDateTime]) as [FROM]  FROM [Bot_BPMS_FinExpApv].[dbo].[tbl_BotDB] WHERE [IsReported] = 'False' AND [Status] <> 'New'<
+
+
+
+
+
+
+SELECT
+
+       Sum(CASE When [Status] = 'Response Awaited from RM' THEN 1 ELSE 0 END) as [Aawaiting],
+
+       Sum(CASE When CHARINDEX('Request Forwarded to CCS',[Status]) > 0 THEN 1 ELSE 0 END) as [Forwarded],
+
+       Sum(CASE When [Status] = 'Request Rejected on BPMS' THEN 1 ELSE 0 END) as [Rejected],
+
+       Sum(CASE When [Status] = 'Response Awaited from RM' THEN 1 ELSE 0 END) as [Approved],
+
+
+       count(*) as [Total],
+
+       Min([OpenDateTime]) as [FROM],
+
+       Max([OpenDateTime]) as [FROM] 
+
+FROM [Bot_BPMS_FinExpApv].[dbo].[tbl_BotDB]
+
+WHERE [IsReported] = 'False' AND [Status] <> 'New'
